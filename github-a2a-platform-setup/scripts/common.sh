@@ -276,7 +276,6 @@ declare -a REPO_DEFINITIONS=(
     "a2a/RegistryAgent|Registre d'agents A2A"
     "a2a/NamingSpaceAgent|Agent de gestion des espaces de nommage A2A"
 
-    
     # ── cloudinfra ──
     "cloudinfra/istio-config|Configuration Istio et maillage réseau"
     "cloudinfra/s3|Implementation du stockage S3"
