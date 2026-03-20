@@ -37,11 +37,11 @@ for entry in "${REPO_DEFINITIONS[@]}"; do
     path="${entry%%|*}"
     repo_name="$(path_to_repo_name "$path")"
     group="$(path_to_group "$path")"
-    ((TOTAL++))
+    TOTAL=$((TOTAL + 1))
 
     if ! is_agent_repo "$group"; then
         log_info "  ⊘ ${repo_name} (infra/template, pas de workflow Python)"
-        ((SKIPPED++))
+        SKIPPED=$((SKIPPED + 1))
         continue
     fi
 
@@ -94,9 +94,9 @@ EOF
     done
 
     if $repo_ok; then
-        ((DEPLOYED++))
+        DEPLOYED=$((DEPLOYED + 1))
     else
-        ((FAILED++))
+        FAILED=$((FAILED + 1))
     fi
 done
 
