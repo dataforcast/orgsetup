@@ -82,7 +82,7 @@ print(json.dumps(existing + new))
         if [[ "$count" -lt 100 ]]; then
             break
         fi
-        ((page++))
+        page=$((page + 1))
     done
 
     echo "$all_items"
@@ -428,18 +428,18 @@ if $DELETE_ORG; then
         case "$http_code" in
             202|204)
                 log_success "Organisation ${ORG_NAME} supprimée."
-                ((TOTAL_DELETED++))
+                TOTAL_DELETED=$((TOTAL_DELETED + 1))
                 ;;
             403)
                 log_error "403 Forbidden — Seul un owner de l'organisation peut la supprimer."
                 echo "  → Vérifier le rôle du compte sur https://github.com/orgs/${ORG_NAME}/people"
-                ((TOTAL_FAILED++))
+                TOTAL_FAILED=$((TOTAL_FAILED + 1))
                 ;;
             *)
                 log_error "Échec (HTTP ${http_code})"
                 body="$(echo "$response" | sed '$d')"
                 echo "  → $(echo "$body" | python3 -c "import sys,json; print(json.load(sys.stdin).get('message',''))" 2>/dev/null || echo "$body" | head -c 200)"
-                ((TOTAL_FAILED++))
+                TOTAL_FAILED=$((TOTAL_FAILED + 1))
                 ;;
         esac
     fi
