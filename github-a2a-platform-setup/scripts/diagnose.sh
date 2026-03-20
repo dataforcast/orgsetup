@@ -29,7 +29,7 @@ elif [[ "${GITHUB_TOKEN}" == github_pat_* ]]; then
     echo "  → En cas de problème, créer un PAT Classic (voir README.md)."
 elif [[ "${GITHUB_TOKEN}" == gho_* || "${GITHUB_TOKEN}" == ghu_* ]]; then
     log_error "Token OAuth/User-to-server détecté. Utiliser un PAT Classic."
-    ((ISSUES++))
+    ISSUES=$((ISSUES + 1))
 else
     log_warn "Préfixe de token non reconnu. Vérifier qu'il s'agit d'un PAT Classic."
 fi
@@ -51,10 +51,10 @@ if [[ "$http_code" == "200" ]]; then
 elif [[ "$http_code" == "401" ]]; then
     log_error "401 — Token invalide ou expiré."
     echo "  → Recréer le token sur https://github.com/settings/tokens"
-    ((ISSUES++))
+    ISSUES=$((ISSUES + 1))
 else
     log_error "Code HTTP inattendu : ${http_code}"
-    ((ISSUES++))
+    ISSUES=$((ISSUES + 1))
 fi
 
 # ── 3. Scopes du token ─────────────────────────────────────────────────────
@@ -82,7 +82,7 @@ else
             log_success "  ✓ ${scope}"
         else
             log_error "  ✗ ${scope} — MANQUANT"
-            ((ISSUES++))
+            ISSUES=$((ISSUES + 1))
             case "$scope" in
                 repo)
                     echo "    → Nécessaire pour créer/modifier les dépôts et fichiers."
@@ -123,17 +123,17 @@ if [[ "$org_code" == "200" ]]; then
         log_info "  Rôle : ${BOLD}${role}${NC} (état: ${state})"
         if [[ "$role" != "admin" ]]; then
             log_warn "  → Le rôle 'admin' est recommandé pour la gestion complète."
-            ((ISSUES++))
+            ISSUES=$((ISSUES + 1))
         fi
     fi
 elif [[ "$org_code" == "404" ]]; then
     log_error "Organisation ${ORG_NAME} introuvable."
     echo "  → Vérifier que l'organisation existe sur https://github.com/${ORG_NAME}"
     echo "  → Créer l'organisation si nécessaire via https://github.com/organizations/plan"
-    ((ISSUES++))
+    ISSUES=$((ISSUES + 1))
 else
     log_error "Accès refusé à l'organisation (HTTP ${org_code})."
-    ((ISSUES++))
+    ISSUES=$((ISSUES + 1))
 fi
 
 # ── 5. Rate limit ──────────────────────────────────────────────────────────
@@ -185,7 +185,7 @@ if echo "$create_result" | grep -q '"name"'; then
 else
     log_error "  → Échec de création du dépôt de test"
     echo "$create_result" | head -5
-    ((ISSUES++))
+    ISSUES=$((ISSUES + 1))
 fi
 
 # ── 7. Politique de l'organisation (third-party access) ───────────────────
