@@ -89,20 +89,20 @@ for repo in "${REPOS_TO_DELETE[@]}"; do
     case "$http_code" in
         204)
             log_success "  → ${repo} supprimé"
-            ((DELETED++))
+            DELETED=$((DELETED + 1))
             ;;
         403)
             log_error "  → 403 Forbidden : scope delete_repo manquant ou restrictions org."
             echo "    → Ajouter le scope delete_repo au token PAT."
-            ((FAILED++))
+            FAILED=$((FAILED + 1))
             ;;
         404)
             log_warn "  → ${repo} n'existe pas (déjà supprimé ?)"
-            ((DELETED++))
+            DELETED=$((DELETED + 1))
             ;;
         *)
             log_error "  → Échec (HTTP ${http_code})"
-            ((FAILED++))
+            FAILED=$((FAILED + 1))
             ;;
     esac
 
