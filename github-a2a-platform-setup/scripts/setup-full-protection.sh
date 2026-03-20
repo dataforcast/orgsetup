@@ -34,12 +34,12 @@ for entry in "${REPO_DEFINITIONS[@]}"; do
     path="${entry%%|*}"
     repo_name="$(path_to_repo_name "$path")"
     group="$(path_to_group "$path")"
-    ((TOTAL++))
+    TOTAL=$((TOTAL + 1))
 
     # Les repos cicd-templates n'ont pas besoin de ces checks Python
     if [[ "$group" == "cicd-templates" ]]; then
         log_info "  ⊘ ${repo_name} (template, pas de checks CI Python)"
-        ((SKIPPED++))
+        SKIPPED=$((SKIPPED + 1))
         continue
     fi
 
@@ -61,7 +61,7 @@ except:
     if [[ "${check_count:-0}" -eq 0 ]]; then
         log_warn "  → Aucun check CI trouvé sur ${repo_name}. On passe."
         log_info "    Exécuter d'abord un workflow CI puis relancer ce script."
-        ((SKIPPED++))
+        SKIPPED=$((SKIPPED + 1))
         continue
     fi
 
@@ -100,9 +100,9 @@ EOF
     done
 
     if $repo_ok; then
-        ((SUCCESS++))
+        SUCCESS=$((SUCCESS + 1))
     else
-        ((FAILED++))
+        FAILED=$((FAILED + 1))
     fi
 done
 
