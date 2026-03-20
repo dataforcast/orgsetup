@@ -30,19 +30,19 @@ for entry in "${REPO_DEFINITIONS[@]}"; do
     GROUPS_SEEN["$group"]=1
 
     log_info "Création du dépôt : ${BOLD}${repo_name}${NC}"
-    ((TOTAL++))
+    TOTAL=$((TOTAL + 1))
 
     result="$(create_repo "$repo_name" "$description" "private" 2>&1)" && {
         if echo "$result" | grep -q '"name"'; then
             log_success "  → ${repo_name} créé."
-            ((CREATED++))
+            CREATED=$((CREATED + 1))
         else
             log_warn "  → ${repo_name} existait déjà."
-            ((SKIPPED++))
+            SKIPPED=$((SKIPPED + 1))
         fi
     } || {
         echo "$result"
-        ((FAILED++))
+        FAILED=$((FAILED + 1))
     }
 
     rate_limit_pause 1

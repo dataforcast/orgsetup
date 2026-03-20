@@ -238,7 +238,7 @@ for r in repos:
             break
         fi
         all_repos+="${names}"$'\n'
-        ((page++))
+        page=$((page + 1))
     done
     echo "$all_repos" | sed '/^$/d'
 }
