@@ -65,19 +65,19 @@ run_step() {
 STEP=1
 
 run_step $STEP "Création des dépôts" "${SCRIPT_DIR}/create-repos.sh"
-((STEP++))
+STEP=$((STEP + 1))
 
 run_step $STEP "Création des branches" "${SCRIPT_DIR}/setup-branches.sh"
-((STEP++))
+STEP=$((STEP + 1))
 
 if ! $SKIP_PROTECTION; then
     run_step $STEP "Protections minimales" "${SCRIPT_DIR}/protect-repos.sh"
-    ((STEP++))
+    STEP=$((STEP + 1))
 fi
 
 if ! $SKIP_CICD; then
     run_step $STEP "Déploiement CI/CD" "${SCRIPT_DIR}/setup-cicd.sh"
-    ((STEP++))
+    STEP=$((STEP + 1))
 fi
 
 echo ""
