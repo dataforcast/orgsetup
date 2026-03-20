@@ -34,7 +34,7 @@ FAILED=0
 for entry in "${REPO_DEFINITIONS[@]}"; do
     path="${entry%%|*}"
     repo_name="$(path_to_repo_name "$path")"
-    ((TOTAL++))
+    TOTAL=$((TOTAL + 1))
 
     log_info "Protection de ${BOLD}${repo_name}${NC}"
 
@@ -50,9 +50,9 @@ for entry in "${REPO_DEFINITIONS[@]}"; do
     done
 
     if $repo_ok; then
-        ((SUCCESS++))
+        SUCCESS=$((SUCCESS + 1))
     else
-        ((FAILED++))
+        FAILED=$((FAILED + 1))
     fi
 done
 
