@@ -280,7 +280,7 @@ declare -a REPO_DEFINITIONS=(
     "cloudinfra/istio-config|Configuration Istio et maillage réseau"
     "cloudinfra/s3|Implementation du stockage S3"
     "cloudinfra/kafka|Implemenation Apache Kafka"
-    "cloudinfra/reddisStream|Implemenation Reddis Stream"
+    "cloudinfra/reddisstream|Implemenation Reddis Stream"
     "cloudinfra/reddis|Implemenation du cahe Reddis"
 
     # ── cicdtemplates ──
